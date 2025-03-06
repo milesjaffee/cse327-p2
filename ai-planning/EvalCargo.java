@@ -1,4 +1,3 @@
-
 import fol.*;
 import planning.*;
 import search.*;
@@ -40,11 +39,11 @@ class EvalCargo {
             new Atom[]{new Atom(In,x,y)});
 
         final ActionSchema fly = 
-            new ActionSchema("Load", 
+            new ActionSchema("Fly", 
             new Variable[]{x, y, z}, //plane x, old airport y, new airport z
             new Literal[]{new Literal(Plane,x), new Literal(Airport,y), new Literal(Airport,z), new Literal(At,x,y)},
-            new Atom[]{new Atom(At,x,y)},
-            new Atom[]{new Atom(At,x,z)});   
+            new Atom[]{new Atom(At,x,z)},
+            new Atom[]{new Atom(At,x,y)});   
 
         final ActionSchema[] planeActions = {load, unload, fly};
 
@@ -58,7 +57,7 @@ class EvalCargo {
 
         final Literal[] goalState1 = {
             new Literal(At, p1, jfk),
-            new Literal(At, c1, jfk)
+            new Literal(At, c1, jfk),
         };
         
         final Atom[] initialState2 = {
@@ -113,8 +112,12 @@ class EvalCargo {
             SearchProblem searchProblem = new ForwardStateSpaceSearch(problems[i-1]);
 
             System.out.println("Uniform Cost Prob "+i);
-            SearchMethod searchMethod = new UniformCost(searchProblem);
-            searchMethod.search();
+            SearchMethod searchMethodUcost = new UniformCost(searchProblem);
+            searchMethodUcost.search();
+
+            System.out.println("A Star Prob "+i);
+            SearchMethod searchMethodAstar = new AStar(searchProblem);
+            searchMethodAstar.search();
         }
 
     }
